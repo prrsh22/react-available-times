@@ -152,8 +152,8 @@ export default class Week extends PureComponent {
 
     const filteredDays = week.days.map((day) => {
       const updatedDay = day;
-      const dayNameInEnglish = moment(day.date).locale('en').format('dddd').toLowerCase();
-      updatedDay.available = availableDays.includes(dayNameInEnglish);
+      const today = new Date();
+      updatedDay.available = (today < updatedDay.date);
       return updatedDay;
     });
     return (
