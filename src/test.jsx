@@ -20,7 +20,7 @@ function dateAt(dayInWeek, hours, minutes) {
   return date;
 }
 
-const TIME_ZONE = 'America/Los_Angeles';
+const TIME_ZONE = 'Asia/Seoul';
 
 const calendars = [
   {
@@ -50,11 +50,21 @@ const initialSelections = [
   },
 ];
 
+const eventList = [{
+  start: dateAt(2, 13, 15),
+  end: dateAt(2, 14, 30),
+  title: '가능혀'
+}, {
+  start: dateAt(3, 16, 40),
+  end: dateAt(3, 17, 30),
+  title: ''
+}]
 
 class Test extends Component {
   constructor() {
     super();
     this.state = {
+      eventList: eventList,
       selections: initialSelections,
     };
     this.handleChange = this.handleChange.bind(this);
@@ -104,7 +114,7 @@ class Test extends Component {
   }
 
   render() {
-    const { selections, recurring } = this.state;
+    const { selections, recurring, eventList } = this.state;
 
     const fullscreen = window.location.search === '?fullscreen';
     return (
@@ -157,6 +167,7 @@ class Test extends Component {
               recurring={recurring}
               availableDays={['monday', 'tuesday', 'wednesday', 'thursday', 'friday']}
               availableHourRange={{ start: 6, end: 20 }}
+              eventList={eventList}
             />
           </div>
         </div>

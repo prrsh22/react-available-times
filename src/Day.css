@@ -5,7 +5,7 @@
 }
 
 :local(.today) {
-  background-color: rgba(218, 228, 242, 0.2);
+  background-color: rgba(195, 253, 147, 0.2);
 }
 
 :local(.grayed) {

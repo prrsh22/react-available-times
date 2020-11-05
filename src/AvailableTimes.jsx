@@ -5,7 +5,6 @@ import momentTimezone from 'moment-timezone';
 import { WEEKS_PER_TIMESPAN, DAYS_IN_WEEK } from './Constants';
 import { validateDays } from './Validators';
 import CalendarSelector from './CalendarSelector';
-import EventsStore from './EventsStore';
 import Slider from './Slider';
 import Week from './Week';
 import makeRecurring from './makeRecurring';
@@ -60,7 +59,6 @@ export default class AvailableTimes extends PureComponent {
       weeks: [],
       currentWeekIndex: 0,
       selectedCalendars,
-      events: [],
       selections: normalizedSelections,
       availableWidth: 10,
     };
@@ -77,7 +75,6 @@ export default class AvailableTimes extends PureComponent {
     this.move = this.move.bind(this);
     this.handleHomeClick = () => this.setState(({ weeks }) => ({
       currentWeekIndex: 0,
-      events: this.eventsStore.get(weeks[0].start),
     }));
     this.handleCalendarChange = this.handleCalendarChange.bind(this);
     this.setRef = this.setRef.bind(this);
@@ -86,17 +83,6 @@ export default class AvailableTimes extends PureComponent {
 
   componentWillMount() {
     window.addEventListener('resize', this.handleWindowResize);
-    const { calendars = [], onEventsRequested, timeZone } = this.props;
-    this.eventsStore = new EventsStore({
-      calendars,
-      timeZone,
-      onEventsRequested,
-      onChange: () => {
-        this.setState(({ weeks, currentWeekIndex }) => ({
-          events: this.eventsStore.get(weeks[currentWeekIndex].start),
-        }));
-      },
-    });
     this.setState({
       weeks: this.expandWeeks(this.state.weeks, 0),
     });
@@ -118,7 +104,6 @@ export default class AvailableTimes extends PureComponent {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowResize);
-    this.eventsStore.cancel();
   }
 
   setRef(element) {
@@ -183,12 +168,6 @@ export default class AvailableTimes extends PureComponent {
       newWeeks = newWeeks.concat(week);
       addedWeeks++;
     }
-    setTimeout(() => {
-      this.eventsStore.addTimespan({
-        start: newWeeks[newWeeks.length - WEEKS_PER_TIMESPAN].start,
-        end: newWeeks[newWeeks.length - 1].end,
-      });
-    });
     return newWeeks;
   }
 
@@ -198,13 +177,12 @@ export default class AvailableTimes extends PureComponent {
       weeks,
     }) => {
       const nextIndex = currentWeekIndex + increment;
-      if (nextIndex < 0) {
+      if (nextIndex < 0 || nextIndex > 1) {
         return undefined;
       }
       return {
         weeks: this.expandWeeks(weeks, nextIndex),
-        currentWeekIndex: nextIndex,
-        events: this.eventsStore.get(weeks[nextIndex].start),
+        currentWeekIndex: nextIndex
       };
     });
   }
@@ -220,6 +198,8 @@ export default class AvailableTimes extends PureComponent {
       touchToDeleteSelection,
       availableDays,
       availableHourRange,
+      events,
+      eventList
     } = this.props;
 
     const {
@@ -227,8 +207,7 @@ export default class AvailableTimes extends PureComponent {
       currentWeekIndex,
       selectedCalendars,
       selections,
-      weeks,
-      events,
+      weeks
     } = this.state;
 
     const homeClasses = [styles.home];
@@ -297,7 +276,7 @@ export default class AvailableTimes extends PureComponent {
                     calendars={calendars}
                     key={week.start}
                     week={week}
-                    events={recurring ? [] : events}
+                    events={events}
                     initialSelections={selections}
                     onChange={this.handleWeekChange}
                     height={height}
@@ -305,6 +284,7 @@ export default class AvailableTimes extends PureComponent {
                     touchToDeleteSelection={touchToDeleteSelection}
                     availableDays={availableDays}
                     availableHourRange={availableHourRange}
+                    eventList={eventList}
                   />
                 );
               })}
@@ -357,7 +337,7 @@ AvailableTimes.propTypes = {
 
 AvailableTimes.defaultProps = {
   timeZone: momentTimezone.tz.guess(),
-  weekStartsOn: 'sunday',
+  weekStartsOn: 'monday',
   touchToDeleteSelection: 'ontouchstart' in window,
   availableDays: DAYS_IN_WEEK,
   availableHourRange: { start: 0, end: 24 },

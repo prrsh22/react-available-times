@@ -31,12 +31,14 @@
 }
 
 :local(.frozen) {
-  background-color: #d6dfe5;
+  background-color: #93cff7;
   border-left: 1px solid #acacac;
   color: #3d464d;
   opacity: 1;
   cursor: default;
 }
+
+:local(.frozen)
 
 :local(.handle) {
   position: absolute;

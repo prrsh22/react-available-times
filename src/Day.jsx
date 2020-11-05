@@ -228,6 +228,7 @@ export default class Day extends PureComponent {
       timeZone,
       touchToDeleteSelection,
       hourLimits,
+      eventList
     } = this.props;
 
     const { selections, index } = this.state;
@@ -263,14 +264,13 @@ export default class Day extends PureComponent {
             top: hourLimits.bottom,
           }}
         />
-        {events.map(({
-          allDay,
+        {eventList.map(({
           start,
           end,
           title,
           width,
           offset,
-        }, i) => !allDay && (
+        }, i) => (
           <TimeSlot
             // eslint-disable-next-line react/no-array-index-key
             key={i + title}

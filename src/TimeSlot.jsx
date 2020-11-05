@@ -6,6 +6,8 @@ import { MINUTE_IN_PIXELS } from './Constants';
 import positionInDay from './positionInDay';
 import styles from './TimeSlot.css';
 
+import inSameDay from './inSameDay';
+
 const BOTTOM_GAP = MINUTE_IN_PIXELS * 10;
 
 export default class TimeSlot extends PureComponent {
@@ -76,6 +78,11 @@ export default class TimeSlot extends PureComponent {
       title,
       touchToDelete,
     } = this.props;
+
+    // 이벤트 다 때려박아서 보내주므로.. 다른 날 일정을 받게 되면 화면 표시 x
+    if (!inSameDay(date, start, timeZone)){
+      return <span></span>;
+    }
 
     const top = positionInDay(date, start, timeZone);
     const bottom = positionInDay(date, end, timeZone);
