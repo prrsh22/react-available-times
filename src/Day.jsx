@@ -270,6 +270,7 @@ export default class Day extends PureComponent {
           title,
           width,
           offset,
+          isFixed
         }, i) => (
           <TimeSlot
             // eslint-disable-next-line react/no-array-index-key
@@ -282,6 +283,7 @@ export default class Day extends PureComponent {
             title={title}
             width={width}
             offset={offset}
+            isFixed={isFixed}
             frozen
           />
         ))}

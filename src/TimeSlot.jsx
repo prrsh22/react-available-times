@@ -77,11 +77,12 @@ export default class TimeSlot extends PureComponent {
       timeZone,
       title,
       touchToDelete,
+      isFixed
     } = this.props;
 
     // 이벤트 다 때려박아서 보내주므로.. 다른 날 일정을 받게 되면 화면 표시 x
     if (!inSameDay(date, start, timeZone)){
-      return <span></span>;
+      return <div></div>;
     }
 
     const top = positionInDay(date, start, timeZone);
@@ -93,9 +94,15 @@ export default class TimeSlot extends PureComponent {
     );
 
     const classes = [styles.component];
+
     if (frozen) {
       classes.push(styles.frozen);
     }
+
+    if (isFixed) {
+      classes.push(styles.fixed);
+    }
+
     if (active) {
       classes.push(styles.active);
     }

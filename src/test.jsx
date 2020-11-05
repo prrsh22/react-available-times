@@ -53,11 +53,13 @@ const initialSelections = [
 const eventList = [{
   start: dateAt(2, 13, 15),
   end: dateAt(2, 14, 30),
-  title: '가능혀'
+  title: '가능혀',
+  isFixed: true
 }, {
   start: dateAt(3, 16, 40),
   end: dateAt(3, 17, 30),
-  title: ''
+  title: '',
+  isFixed: false
 }]
 
 class Test extends Component {

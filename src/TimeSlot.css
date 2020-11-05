@@ -38,7 +38,13 @@
   cursor: default;
 }
 
-:local(.frozen)
+:local(.fixed) {
+  background-color: #f8032c;
+  border-left: 1px solid #acacac;
+  color: #3d464d;
+  opacity: 1;
+  cursor: default;
+}
 
 :local(.handle) {
   position: absolute;
