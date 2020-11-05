@@ -165,9 +165,6 @@ export default class Week extends PureComponent {
             marginRight: widthOfAScrollbar,
           }}
         >
-          <div className={styles.allDayLabel}>
-            All-day
-          </div>
           {filteredDays.map((day, i) => (
             <DayHeader
               timeZone={timeZone}

@@ -53,18 +53,6 @@ export default class DayHeader extends Component {
           {!hideDates && this.text()}
           {hideDates && this.dateLessText()}
         </div>
-        <div className={styles.events}>
-          {events.filter(({ allDay }) => allDay).map((event, i) => (
-            <div
-              // eslint-disable-next-line react/no-array-index-key
-              key={i + event.title}
-              className={styles.event}
-              title={event.title}
-            >
-              {event.title}
-            </div>
-          ))}
-        </div>
       </div>
     );
   }
