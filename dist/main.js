@@ -2277,7 +2277,7 @@ var TimeSlot = function (_PureComponent) {
       var top = (0, _positionInDay2.default)(date, start, timeZone);
       var bottom = (0, _positionInDay2.default)(date, end, timeZone);
 
-      var height = Math.max(bottom - top - (frozen ? BOTTOM_GAP : 0), 1);
+      var height = Math.max(bottom - top, 1);
 
       var classes = [_TimeSlot2.default.component];
 
