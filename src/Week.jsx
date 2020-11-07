@@ -153,7 +153,7 @@ export default class Week extends PureComponent {
     const filteredDays = week.days.map((day) => {
       const updatedDay = day;
       const today = new Date();
-      updatedDay.available = (today < updatedDay.date);
+      updatedDay.available = recurring ? true : (today < updatedDay.date);
       return updatedDay;
     });
     return (
