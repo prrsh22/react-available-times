@@ -2629,7 +2629,7 @@ var Week = function (_PureComponent) {
       var filteredDays = week.days.map(function (day) {
         var updatedDay = day;
         var today = new Date();
-        updatedDay.available = today < updatedDay.date;
+        updatedDay.available = recurring ? true : today < updatedDay.date;
         return updatedDay;
       });
       return _react2.default.createElement(
