@@ -117,14 +117,14 @@ export default class Day extends PureComponent {
 
   handleMouseDown(e) {
     const { timeZone } = this.props;
-    const position = this.relativeY(e.pageY, 60);
+    const position = this.relativeY(e.pageY, 30);
     const dateAtPosition = toDate(this.props.date, position, timeZone);
 
     if (this.findSelectionAt(dateAtPosition)) {
       return;
     }
 
-    let end = toDate(this.props.date, position + HOUR_IN_PIXELS, timeZone);
+    let end = toDate(this.props.date, position + HOUR_IN_PIXELS/2, timeZone);
     end = hasOverlap(this.state.selections, dateAtPosition, end) || end;
     if (end - dateAtPosition < 1800000) {
       // slot is less than 30 mins
@@ -134,7 +134,7 @@ export default class Day extends PureComponent {
       edge: 'end',
       index: selections.length,
       lastKnownPosition: position,
-      minLengthInMinutes: 60,
+      minLengthInMinutes: 30,
       selections: selections.concat([{
         start: dateAtPosition,
         end,
