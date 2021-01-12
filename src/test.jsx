@@ -170,6 +170,7 @@ class Test extends Component {
               availableDays={['monday', 'tuesday', 'wednesday', 'thursday', 'friday']}
               availableHourRange={{ start: 6, end: 20 }}
               eventList={eventList}
+              editable={false}
             />
           </div>
         </div>

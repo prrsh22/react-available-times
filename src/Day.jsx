@@ -220,6 +220,7 @@ export default class Day extends PureComponent {
 
   render() {
     const {
+      editable,
       available,
       availableWidth,
       date,
@@ -250,20 +251,6 @@ export default class Day extends PureComponent {
           width: availableWidth,
         }}
       >
-        <div
-          className={`${styles.grayed} ${styles.block}`}
-          style={{
-            height: hourLimits.top,
-            top: 0,
-          }}
-        />
-        <div
-          className={`${styles.grayed} ${styles.block}`}
-          style={{
-            height: hourLimits.bottomHeight,
-            top: hourLimits.bottom,
-          }}
-        />
         {eventList.map(({
           start,
           end,
@@ -287,7 +274,22 @@ export default class Day extends PureComponent {
             frozen
           />
         ))}
-        { available && (
+        
+        <div
+          className={`${styles.grayed} ${styles.block}`}
+          style={{
+            height: hourLimits.top,
+            top: 0,
+          }}
+        />
+        <div
+          className={`${styles.grayed} ${styles.block}`}
+          style={{
+            height: hourLimits.bottomHeight,
+            top: hourLimits.bottom,
+          }}
+        />
+        { editable && available && (
           <div
             onMouseDown={this.handleMouseDown}
             onMouseUp={this.handleMouseUp}
@@ -326,6 +328,7 @@ export default class Day extends PureComponent {
 }
 
 Day.propTypes = {
+  editable: PropTypes.bool,
   available: PropTypes.bool,
   availableWidth: PropTypes.number.isRequired,
   hourLimits: PropTypes.shape({

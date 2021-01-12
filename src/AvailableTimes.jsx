@@ -47,6 +47,7 @@ export default class AvailableTimes extends PureComponent {
     recurring,
     timeZone,
     weekStartsOn,
+    editable
   }) {
     super();
     const selectedCalendars =
@@ -199,7 +200,8 @@ export default class AvailableTimes extends PureComponent {
       availableDays,
       availableHourRange,
       events,
-      eventList
+      eventList,
+      editable
     } = this.props;
 
     const {
@@ -285,6 +287,7 @@ export default class AvailableTimes extends PureComponent {
                     availableDays={availableDays}
                     availableHourRange={availableHourRange}
                     eventList={eventList}
+                    editable={editable}
                   />
                 );
               })}
@@ -303,6 +306,7 @@ export default class AvailableTimes extends PureComponent {
 }
 
 AvailableTimes.propTypes = {
+  editable: PropTypes.bool,
   timeConvention: PropTypes.oneOf(['12h', '24h']),
   timeZone: PropTypes.string.isRequired,
   initialSelections: PropTypes.arrayOf(PropTypes.shape({
@@ -336,6 +340,7 @@ AvailableTimes.propTypes = {
 };
 
 AvailableTimes.defaultProps = {
+  editable: true,
   timeZone: momentTimezone.tz.guess(),
   weekStartsOn: 'monday',
   touchToDeleteSelection: 'ontouchstart' in window,

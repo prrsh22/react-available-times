@@ -146,7 +146,8 @@ export default class Week extends PureComponent {
       recurring,
       touchToDeleteSelection,
       availableDays,
-      eventList
+      eventList,
+      editable
     } = this.props;
     const { dayEvents, daySelections, daysWidth, widthOfAScrollbar } = this.state;
 
@@ -212,6 +213,7 @@ export default class Week extends PureComponent {
                 hourLimits={this.generateHourLimits()}
                 touchToDeleteSelection={touchToDeleteSelection}
                 eventList={eventList}
+                editable={editable}
               />
             ))}
           </div>
@@ -222,6 +224,7 @@ export default class Week extends PureComponent {
 }
 
 Week.propTypes = {
+  editable: PropTypes.bool,
   availableWidth: PropTypes.number.isRequired,
   timeConvention: PropTypes.oneOf(['12h', '24h']),
   timeZone: PropTypes.string.isRequired,
