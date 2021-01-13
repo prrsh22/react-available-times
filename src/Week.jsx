@@ -112,7 +112,7 @@ export default class Week extends PureComponent {
   generateHourLimits() {
     const { availableHourRange } = this.props;
     return {
-      top: availableHourRange.start * HOUR_IN_PIXELS, // top blocker
+      top: (availableHourRange.start) * HOUR_IN_PIXELS, // top blocker
       bottom: availableHourRange.end * HOUR_IN_PIXELS,
       bottomHeight: (24 - availableHourRange.end) * HOUR_IN_PIXELS, // bottom height
       difference: ((availableHourRange.end - availableHourRange.start) * HOUR_IN_PIXELS)
@@ -123,7 +123,7 @@ export default class Week extends PureComponent {
   // eslint-disable-next-line class-methods-use-this
   renderLines() {
     const result = [];
-    for (let i = 0; i < 23; i++) {
+    for (let i = 7; i < 24; i++) {
       result.push(
         <div
           key={i}

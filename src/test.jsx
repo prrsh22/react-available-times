@@ -51,8 +51,8 @@ const initialSelections = [
 ];
 
 const eventList = [{
-  start: dateAt(2, 13, 15),
-  end: dateAt(2, 14, 30),
+  start: dateAt(1, 13, 15),
+  end: dateAt(1, 14, 30),
   title: '가능혀',
   isFixed: true
 }, {
@@ -168,9 +168,9 @@ class Test extends Component {
               onEventsRequested={this.handleEventsRequested}
               recurring={recurring}
               availableDays={['monday', 'tuesday', 'wednesday', 'thursday', 'friday']}
-              availableHourRange={{ start: 6, end: 20 }}
+              availableHourRange={{ start: 0, end: 24 }}
               eventList={eventList}
-              editable={false}
+              editable={true}
             />
           </div>
         </div>

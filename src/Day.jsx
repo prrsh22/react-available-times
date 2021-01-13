@@ -247,7 +247,7 @@ export default class Day extends PureComponent {
       <div
         className={classes.join(' ')}
         style={{
-          height: HOUR_IN_PIXELS * 24,
+          height: HOUR_IN_PIXELS * 17,
           width: availableWidth,
         }}
       >
