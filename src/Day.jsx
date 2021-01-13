@@ -220,7 +220,7 @@ export default class Day extends PureComponent {
 
   render() {
     const {
-      editable,
+      addable,
       available,
       availableWidth,
       date,
@@ -289,7 +289,7 @@ export default class Day extends PureComponent {
             top: hourLimits.bottom,
           }}
         />
-        { editable && available && (
+        { addable && available && (
           <div
             onMouseDown={this.handleMouseDown}
             onMouseUp={this.handleMouseUp}
@@ -306,6 +306,21 @@ export default class Day extends PureComponent {
             }}
           />
         )}
+        
+        { !addable && available && <div
+        onMouseUp={this.handleMouseUp}
+        onMouseMove={this.handleMouseMove}
+        onMouseOut={this.handleMouseUp}
+        onTouchStart={this.handleTouchStart}
+        onTouchMove={this.handleTouchMove}
+        onTouchEnd={this.handleTouchEnd}
+        className={styles.mouseTarget}
+        ref={this.handleMouseTargetRef}
+        style={{
+          top: hourLimits.top,
+          height: hourLimits.difference,
+        }} // 이미 선택된 슬롯은 수정할 수 있지만 새 슬롯 추가 불가
+      />}
         {selections.map(({ start, end }, i) => (
           <TimeSlot
             // eslint-disable-next-line react/no-array-index-key
@@ -328,7 +343,7 @@ export default class Day extends PureComponent {
 }
 
 Day.propTypes = {
-  editable: PropTypes.bool,
+  addable: PropTypes.bool,
   available: PropTypes.bool,
   availableWidth: PropTypes.number.isRequired,
   hourLimits: PropTypes.shape({
