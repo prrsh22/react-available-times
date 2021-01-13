@@ -555,7 +555,7 @@ function positionInDay(withinDay, date, timeZone) {
     return 24 * _Constants.HOUR_IN_PIXELS;
   }
   var mom = _momentTimezone2.default.tz(date, timeZone);
-  return mom.hours() * _Constants.HOUR_IN_PIXELS + mom.minutes() * _Constants.MINUTE_IN_PIXELS;
+  return (mom.hours() - 7) * _Constants.HOUR_IN_PIXELS + mom.minutes() * _Constants.MINUTE_IN_PIXELS;
 }
 module.exports = exports['default'];
 
@@ -733,7 +733,8 @@ var AvailableTimes = function (_PureComponent) {
         initialSelections = _ref$initialSelection === undefined ? [] : _ref$initialSelection,
         recurring = _ref.recurring,
         timeZone = _ref.timeZone,
-        weekStartsOn = _ref.weekStartsOn;
+        weekStartsOn = _ref.weekStartsOn,
+        editable = _ref.editable;
 
     _classCallCheck(this, AvailableTimes);
 
@@ -929,7 +930,8 @@ var AvailableTimes = function (_PureComponent) {
           availableDays = _props3.availableDays,
           availableHourRange = _props3.availableHourRange,
           events = _props3.events,
-          eventList = _props3.eventList;
+          eventList = _props3.eventList,
+          editable = _props3.editable;
       var _state = this.state,
           availableWidth = _state.availableWidth,
           currentWeekIndex = _state.currentWeekIndex,
@@ -1026,7 +1028,8 @@ var AvailableTimes = function (_PureComponent) {
                   touchToDeleteSelection: touchToDeleteSelection,
                   availableDays: availableDays,
                   availableHourRange: availableHourRange,
-                  eventList: eventList
+                  eventList: eventList,
+                  editable: editable
                 });
               })
             )
@@ -1051,6 +1054,7 @@ exports.default = AvailableTimes;
 
 
 AvailableTimes.propTypes = {
+  editable: _propTypes2.default.bool,
   timeConvention: _propTypes2.default.oneOf(['12h', '24h']),
   timeZone: _propTypes2.default.string.isRequired,
   initialSelections: _propTypes2.default.arrayOf(_propTypes2.default.shape({
@@ -1078,6 +1082,7 @@ AvailableTimes.propTypes = {
 };
 
 AvailableTimes.defaultProps = {
+  editable: true,
   timeZone: _momentTimezone2.default.tz.guess(),
   weekStartsOn: 'monday',
   touchToDeleteSelection: 'ontouchstart' in window,
@@ -1470,14 +1475,14 @@ var Day = function (_PureComponent) {
     value: function handleMouseDown(e) {
       var timeZone = this.props.timeZone;
 
-      var position = this.relativeY(e.pageY, 60);
+      var position = this.relativeY(e.pageY, 30);
       var dateAtPosition = (0, _toDate2.default)(this.props.date, position, timeZone);
 
       if (this.findSelectionAt(dateAtPosition)) {
         return;
       }
 
-      var end = (0, _toDate2.default)(this.props.date, position + _Constants.HOUR_IN_PIXELS, timeZone);
+      var end = (0, _toDate2.default)(this.props.date, position + _Constants.HOUR_IN_PIXELS / 2, timeZone);
       end = (0, _hasOverlap2.default)(this.state.selections, dateAtPosition, end) || end;
       if (end - dateAtPosition < 1800000) {
         // slot is less than 30 mins
@@ -1489,7 +1494,7 @@ var Day = function (_PureComponent) {
           edge: 'end',
           index: selections.length,
           lastKnownPosition: position,
-          minLengthInMinutes: 60,
+          minLengthInMinutes: 30,
           selections: selections.concat([{
             start: dateAtPosition,
             end: end
@@ -1604,6 +1609,7 @@ var Day = function (_PureComponent) {
       var _this4 = this;
 
       var _props3 = this.props,
+          editable = _props3.editable,
           available = _props3.available,
           availableWidth = _props3.availableWidth,
           date = _props3.date,
@@ -1632,24 +1638,10 @@ var Day = function (_PureComponent) {
         {
           className: classes.join(' '),
           style: {
-            height: _Constants.HOUR_IN_PIXELS * 24,
+            height: _Constants.HOUR_IN_PIXELS * 17,
             width: availableWidth
           }
         },
-        _react2.default.createElement('div', {
-          className: _Day2.default.grayed + ' ' + _Day2.default.block,
-          style: {
-            height: hourLimits.top,
-            top: 0
-          }
-        }),
-        _react2.default.createElement('div', {
-          className: _Day2.default.grayed + ' ' + _Day2.default.block,
-          style: {
-            height: hourLimits.bottomHeight,
-            top: hourLimits.bottom
-          }
-        }),
         eventList.map(function (_ref12, i) {
           var start = _ref12.start,
               end = _ref12.end,
@@ -1672,7 +1664,21 @@ var Day = function (_PureComponent) {
             frozen: true
           });
         }),
-        available && _react2.default.createElement('div', {
+        _react2.default.createElement('div', {
+          className: _Day2.default.grayed + ' ' + _Day2.default.block,
+          style: {
+            height: hourLimits.top,
+            top: 0
+          }
+        }),
+        _react2.default.createElement('div', {
+          className: _Day2.default.grayed + ' ' + _Day2.default.block,
+          style: {
+            height: hourLimits.bottomHeight,
+            top: hourLimits.bottom
+          }
+        }),
+        editable && available && _react2.default.createElement('div', {
           onMouseDown: this.handleMouseDown,
           onMouseUp: this.handleMouseUp,
           onMouseMove: this.handleMouseMove,
@@ -1716,6 +1722,7 @@ exports.default = Day;
 
 
 Day.propTypes = {
+  editable: _propTypes2.default.bool,
   available: _propTypes2.default.bool,
   availableWidth: _propTypes2.default.number.isRequired,
   hourLimits: _propTypes2.default.shape({
@@ -1921,7 +1928,7 @@ function Ruler(_ref) {
         _react2.default.createElement(
           'div',
           { className: _Ruler2.default.inner },
-          hour !== '00' && hour !== '12am' ? hour : null
+          hour !== '07' && hour !== '12am' ? hour : null
         )
       );
     })
@@ -2594,7 +2601,7 @@ var Week = function (_PureComponent) {
     key: 'renderLines',
     value: function renderLines() {
       var result = [];
-      for (var i = 0; i < 23; i++) {
+      for (var i = 7; i < 24; i++) {
         result.push(_react2.default.createElement('div', {
           key: i,
           className: _Week2.default.hour,
@@ -2618,7 +2625,8 @@ var Week = function (_PureComponent) {
           recurring = _props.recurring,
           touchToDeleteSelection = _props.touchToDeleteSelection,
           availableDays = _props.availableDays,
-          eventList = _props.eventList;
+          eventList = _props.eventList,
+          editable = _props.editable;
       var _state = this.state,
           dayEvents = _state.dayEvents,
           daySelections = _state.daySelections,
@@ -2696,7 +2704,8 @@ var Week = function (_PureComponent) {
                 onChange: _this3.handleDayChange,
                 hourLimits: _this3.generateHourLimits(),
                 touchToDeleteSelection: touchToDeleteSelection,
-                eventList: eventList
+                eventList: eventList,
+                editable: editable
               });
             })
           )
@@ -2712,6 +2721,7 @@ exports.default = Week;
 
 
 Week.propTypes = {
+  editable: _propTypes2.default.bool,
   availableWidth: _propTypes2.default.number.isRequired,
   timeConvention: _propTypes2.default.oneOf(['12h', '24h']),
   timeZone: _propTypes2.default.string.isRequired,
@@ -2859,7 +2869,7 @@ function formatTime(date, timeConvention) {
 function hours(timeConvention) {
   var result = [];
   var date = (0, _moment2.default)().minutes(0).seconds(0).milliseconds(0);
-  for (var i = 0; i < 24; i++) {
+  for (var i = 7; i < 24; i++) {
     date.hour(i);
     result.push(formatTime(date, timeConvention));
   }
@@ -3016,7 +3026,7 @@ function toDate(day, pixelsFromTop, timeZone) {
   var m = _momentTimezone2.default.tz(day, timeZone);
   var hours = Math.floor(pixelsFromTop / _Constants.HOUR_IN_PIXELS);
   var minutes = Math.ceil(pixelsFromTop % _Constants.HOUR_IN_PIXELS / _Constants.HOUR_IN_PIXELS * 60);
-  m.hour(hours).minutes(minutes).seconds(0).milliseconds(0);
+  m.hour(hours + 7).minutes(minutes).seconds(0).milliseconds(0);
   return m.toDate();
 }
 module.exports = exports['default'];
