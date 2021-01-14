@@ -11,7 +11,7 @@ export default function positionInDay(withinDay, date, timeZone) {
     if (date < withinDay) {
       return 0;
     }
-    return 24 * HOUR_IN_PIXELS;
+    return 17 * HOUR_IN_PIXELS;
   }
   const mom = momentTimezone.tz(date, timeZone);
   return (

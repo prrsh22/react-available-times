@@ -180,6 +180,8 @@ export default class Day extends PureComponent {
           newEnd = selection.end;
         }
 
+        if (newEnd - newStart <= 15 * 1000 * 60) return;
+
         selection.start = newStart;
         selection.end = newEnd;
       } else {

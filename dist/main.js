@@ -552,7 +552,7 @@ function positionInDay(withinDay, date, timeZone) {
     if (date < withinDay) {
       return 0;
     }
-    return 24 * _Constants.HOUR_IN_PIXELS;
+    return 17 * _Constants.HOUR_IN_PIXELS;
   }
   var mom = _momentTimezone2.default.tz(date, timeZone);
   return (mom.hours() - 7) * _Constants.HOUR_IN_PIXELS + mom.minutes() * _Constants.MINUTE_IN_PIXELS;
@@ -1564,6 +1564,8 @@ var Day = function (_PureComponent) {
             // if has reached bottom blocker and it is going downwards, fix.
             newEnd = selection.end;
           }
+
+          if (newEnd - newStart <= 15 * 1000 * 60) return;
 
           selection.start = newStart;
           selection.end = newEnd;
@@ -2603,9 +2605,9 @@ var Week = function (_PureComponent) {
 
       return {
         top: availableHourRange.start * _Constants.HOUR_IN_PIXELS, // top blocker
-        bottom: availableHourRange.end * _Constants.HOUR_IN_PIXELS,
-        bottomHeight: (24 - availableHourRange.end) * _Constants.HOUR_IN_PIXELS, // bottom height
-        difference: (availableHourRange.end - availableHourRange.start) * _Constants.HOUR_IN_PIXELS + _Constants.MINUTE_IN_PIXELS * 14
+        bottom: (availableHourRange.end - 7) * _Constants.HOUR_IN_PIXELS,
+        bottomHeight: (24 - 7 - availableHourRange.end) * _Constants.HOUR_IN_PIXELS, // bottom height
+        difference: (availableHourRange.end - availableHourRange.start - 7) * _Constants.HOUR_IN_PIXELS + _Constants.MINUTE_IN_PIXELS * 14
       };
     }
 

@@ -113,9 +113,9 @@ export default class Week extends PureComponent {
     const { availableHourRange } = this.props;
     return {
       top: (availableHourRange.start) * HOUR_IN_PIXELS, // top blocker
-      bottom: availableHourRange.end * HOUR_IN_PIXELS,
-      bottomHeight: (24 - availableHourRange.end) * HOUR_IN_PIXELS, // bottom height
-      difference: ((availableHourRange.end - availableHourRange.start) * HOUR_IN_PIXELS)
+      bottom: (availableHourRange.end - 7) * HOUR_IN_PIXELS,
+      bottomHeight: (24 - 7 - availableHourRange.end) * HOUR_IN_PIXELS, // bottom height
+      difference: ((availableHourRange.end - availableHourRange.start - 7) * HOUR_IN_PIXELS)
         + (MINUTE_IN_PIXELS * 14),
     };
   }
