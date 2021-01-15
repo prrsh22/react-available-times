@@ -931,7 +931,8 @@ var AvailableTimes = function (_PureComponent) {
           availableHourRange = _props3.availableHourRange,
           events = _props3.events,
           eventList = _props3.eventList,
-          addable = _props3.addable;
+          addable = _props3.addable,
+          editable = _props3.editable;
       var _state = this.state,
           availableWidth = _state.availableWidth,
           currentWeekIndex = _state.currentWeekIndex,
@@ -1029,7 +1030,8 @@ var AvailableTimes = function (_PureComponent) {
                   availableDays: availableDays,
                   availableHourRange: availableHourRange,
                   eventList: eventList,
-                  addable: addable
+                  addable: addable,
+                  editable: editable
                 });
               })
             )
@@ -1083,6 +1085,7 @@ AvailableTimes.propTypes = {
 
 AvailableTimes.defaultProps = {
   addable: true,
+  editable: true,
   timeZone: _momentTimezone2.default.tz.guess(),
   weekStartsOn: 'monday',
   touchToDeleteSelection: 'ontouchstart' in window,
@@ -1376,9 +1379,16 @@ var Day = function (_PureComponent) {
       return undefined;
     }
   }, {
+    key: 'blankFunc',
+    value: function blankFunc() {
+      return;
+    }
+  }, {
     key: 'relativeY',
     value: function relativeY(pageY) {
       var rounding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ROUND_TO_NEAREST_MINS;
+
+      if (!this.editable) return;
 
       var _mouseTargetRef$getBo = this.mouseTargetRef.getBoundingClientRect(),
           top = _mouseTargetRef$getBo.top;
@@ -1612,6 +1622,7 @@ var Day = function (_PureComponent) {
 
       var _props3 = this.props,
           addable = _props3.addable,
+          editable = _props3.editable,
           available = _props3.available,
           availableWidth = _props3.availableWidth,
           date = _props3.date,
@@ -1680,7 +1691,7 @@ var Day = function (_PureComponent) {
             top: hourLimits.bottom
           }
         }),
-        addable && available && _react2.default.createElement('div', {
+        editable && addable && available && _react2.default.createElement('div', {
           onMouseDown: this.handleMouseDown,
           onMouseUp: this.handleMouseUp,
           onMouseMove: this.handleMouseMove,
@@ -1695,7 +1706,7 @@ var Day = function (_PureComponent) {
             height: hourLimits.difference
           }
         }),
-        !addable && available && _react2.default.createElement('div', {
+        editable && !addable && available && _react2.default.createElement('div', {
           onMouseUp: this.handleMouseUp,
           onMouseMove: this.handleMouseMove,
           onMouseOut: this.handleMouseUp,
@@ -1708,6 +1719,21 @@ var Day = function (_PureComponent) {
             top: hourLimits.top,
             height: hourLimits.difference
           } // 이미 선택된 슬롯은 수정할 수 있지만 새 슬롯 추가 불가
+        }),
+        !editable && available && _react2.default.createElement('div', {
+          onMouseDown: this.blankFunc,
+          onMouseUp: this.blankFunc,
+          onMouseMove: this.blankFunc,
+          onMouseOut: this.blankFunc,
+          onTouchStart: this.blankFunc,
+          onTouchMove: this.blankFunc,
+          onTouchEnd: this.blankFunc,
+          className: _Day2.default.mouseTarget,
+          ref: this.handleMouseTargetRef,
+          style: {
+            top: hourLimits.top,
+            height: hourLimits.difference
+          }
         }),
         selections.map(function (_ref13, i) {
           var start = _ref13.start,
@@ -1724,7 +1750,8 @@ var Day = function (_PureComponent) {
             onSizeChangeStart: _this4.handleSizeChangeStart,
             onMoveStart: _this4.handleMoveStart,
             onDelete: _this4.handleDelete,
-            touchToDelete: touchToDeleteSelection
+            touchToDelete: touchToDeleteSelection,
+            editable: editable
           });
         })
       );
@@ -1739,6 +1766,7 @@ exports.default = Day;
 
 Day.propTypes = {
   addable: _propTypes2.default.bool,
+  editable: _propTypes2.default.bool,
   available: _propTypes2.default.bool,
   availableWidth: _propTypes2.default.number.isRequired,
   hourLimits: _propTypes2.default.shape({
@@ -2212,7 +2240,7 @@ var TimeSlot = function (_PureComponent) {
   }, {
     key: 'handleDelete',
     value: function handleDelete(event) {
-      if (new Date().getTime() - this.creationTime < 500) {
+      if (new Date().getTime() - this.creationTime < 500 || !this.props.editable) {
         // Just created. Ignore this event, as it's likely coming from the same
         // click event that created it.
         return;
@@ -2289,7 +2317,8 @@ var TimeSlot = function (_PureComponent) {
           timeZone = _props6.timeZone,
           title = _props6.title,
           touchToDelete = _props6.touchToDelete,
-          isFixed = _props6.isFixed;
+          isFixed = _props6.isFixed,
+          editable = _props6.editable;
 
       // 이벤트 다 때려박아서 보내주므로.. 다른 날 일정을 받게 되면 화면 표시 x
 
@@ -2364,7 +2393,7 @@ var TimeSlot = function (_PureComponent) {
               },
               '...'
             ),
-            _react2.default.createElement(
+            editable ? _react2.default.createElement(
               'button',
               {
                 className: _TimeSlot2.default.delete,
@@ -2372,7 +2401,7 @@ var TimeSlot = function (_PureComponent) {
                 onMouseDown: this.preventMove
               },
               '\xD7'
-            )
+            ) : null
           )
         )
       );
@@ -2642,7 +2671,8 @@ var Week = function (_PureComponent) {
           touchToDeleteSelection = _props.touchToDeleteSelection,
           availableDays = _props.availableDays,
           eventList = _props.eventList,
-          addable = _props.addable;
+          addable = _props.addable,
+          editable = _props.editable;
       var _state = this.state,
           dayEvents = _state.dayEvents,
           daySelections = _state.daySelections,
@@ -2721,7 +2751,8 @@ var Week = function (_PureComponent) {
                 hourLimits: _this3.generateHourLimits(),
                 touchToDeleteSelection: touchToDeleteSelection,
                 eventList: eventList,
-                addable: addable
+                addable: addable,
+                editable: editable
               });
             })
           )

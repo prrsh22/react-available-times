@@ -24,7 +24,7 @@ export default class TimeSlot extends PureComponent {
   }
 
   handleDelete(event) {
-    if (new Date().getTime() - this.creationTime < 500) {
+    if (new Date().getTime() - this.creationTime < 500 || !this.props.editable) {
       // Just created. Ignore this event, as it's likely coming from the same
       // click event that created it.
       return;
@@ -77,7 +77,8 @@ export default class TimeSlot extends PureComponent {
       timeZone,
       title,
       touchToDelete,
-      isFixed
+      isFixed,
+      editable
     } = this.props;
 
     // 이벤트 다 때려박아서 보내주므로.. 다른 날 일정을 받게 되면 화면 표시 x
@@ -148,13 +149,14 @@ export default class TimeSlot extends PureComponent {
             >
               ...
             </div>
-            <button
+            {editable ? <button
               className={styles.delete}
               onClick={this.handleDelete}
               onMouseDown={this.preventMove}
             >
               ×
-            </button>
+            </button> : null}
+            
           </div>
         )}
       </div>

@@ -46,7 +46,12 @@ export default class Day extends PureComponent {
     return undefined;
   }
 
+  blankFunc () {
+    return;
+  }
+
   relativeY(pageY, rounding = ROUND_TO_NEAREST_MINS) {
+    if (!this.editable) return;
     const { top } = this.mouseTargetRef.getBoundingClientRect();
     let realY = pageY - top - (window.pageYOffset ||
       document.documentElement.scrollTop || document.body.scrollTop || 0);
@@ -223,6 +228,7 @@ export default class Day extends PureComponent {
   render() {
     const {
       addable,
+      editable,
       available,
       availableWidth,
       date,
@@ -291,7 +297,7 @@ export default class Day extends PureComponent {
             top: hourLimits.bottom,
           }}
         />
-        { addable && available && (
+        { editable && addable && available && (
           <div
             onMouseDown={this.handleMouseDown}
             onMouseUp={this.handleMouseUp}
@@ -309,7 +315,7 @@ export default class Day extends PureComponent {
           />
         )}
         
-        { !addable && available && <div
+        { editable && !addable && available && <div
         onMouseUp={this.handleMouseUp}
         onMouseMove={this.handleMouseMove}
         onMouseOut={this.handleMouseUp}
@@ -322,6 +328,22 @@ export default class Day extends PureComponent {
           top: hourLimits.top,
           height: hourLimits.difference,
         }} // 이미 선택된 슬롯은 수정할 수 있지만 새 슬롯 추가 불가
+      />}
+
+      { !editable && available && <div
+        onMouseDown={this.blankFunc}
+        onMouseUp={this.blankFunc}
+        onMouseMove={this.blankFunc}
+        onMouseOut={this.blankFunc}
+        onTouchStart={this.blankFunc}
+        onTouchMove={this.blankFunc}
+        onTouchEnd={this.blankFunc}
+        className={styles.mouseTarget}
+        ref={this.handleMouseTargetRef}
+        style={{
+          top: hourLimits.top,
+          height: hourLimits.difference,
+        }}
       />}
         {selections.map(({ start, end }, i) => (
           <TimeSlot
@@ -337,6 +359,7 @@ export default class Day extends PureComponent {
             onMoveStart={this.handleMoveStart}
             onDelete={this.handleDelete}
             touchToDelete={touchToDeleteSelection}
+            editable={editable}
           />
         ))}
       </div>
@@ -346,6 +369,7 @@ export default class Day extends PureComponent {
 
 Day.propTypes = {
   addable: PropTypes.bool,
+  editable: PropTypes.bool,
   available: PropTypes.bool,
   availableWidth: PropTypes.number.isRequired,
   hourLimits: PropTypes.shape({

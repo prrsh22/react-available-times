@@ -147,7 +147,8 @@ export default class Week extends PureComponent {
       touchToDeleteSelection,
       availableDays,
       eventList,
-      addable
+      addable,
+      editable
     } = this.props;
     const { dayEvents, daySelections, daysWidth, widthOfAScrollbar } = this.state;
 
@@ -214,6 +215,7 @@ export default class Week extends PureComponent {
                 touchToDeleteSelection={touchToDeleteSelection}
                 eventList={eventList}
                 addable={addable}
+                editable={editable}
               />
             ))}
           </div>

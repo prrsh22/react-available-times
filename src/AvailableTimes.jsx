@@ -201,7 +201,8 @@ export default class AvailableTimes extends PureComponent {
       availableHourRange,
       events,
       eventList,
-      addable
+      addable,
+      editable
     } = this.props;
 
     const {
@@ -288,6 +289,7 @@ export default class AvailableTimes extends PureComponent {
                     availableHourRange={availableHourRange}
                     eventList={eventList}
                     addable={addable}
+                    editable={editable}
                   />
                 );
               })}
@@ -341,6 +343,7 @@ AvailableTimes.propTypes = {
 
 AvailableTimes.defaultProps = {
   addable: true,
+  editable: true,
   timeZone: momentTimezone.tz.guess(),
   weekStartsOn: 'monday',
   touchToDeleteSelection: 'ontouchstart' in window,
