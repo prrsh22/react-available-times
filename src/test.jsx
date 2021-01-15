@@ -41,8 +41,8 @@ const calendars = [
 
 const initialSelections = [
   {
-    start: dateAt(1, 12, 15),
-    end: dateAt(1, 14, 0),
+    start: dateAt(6, 12, 15),
+    end: dateAt(6, 14, 0),
   },
   {
     start: dateAt(4, 11, 0),

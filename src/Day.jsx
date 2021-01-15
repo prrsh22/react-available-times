@@ -51,7 +51,7 @@ export default class Day extends PureComponent {
   }
 
   relativeY(pageY, rounding = ROUND_TO_NEAREST_MINS) {
-    if (!this.editable) return;
+    if (!this.props.editable) return;
     const { top } = this.mouseTargetRef.getBoundingClientRect();
     let realY = pageY - top - (window.pageYOffset ||
       document.documentElement.scrollTop || document.body.scrollTop || 0);

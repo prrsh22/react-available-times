@@ -1388,7 +1388,7 @@ var Day = function (_PureComponent) {
     value: function relativeY(pageY) {
       var rounding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ROUND_TO_NEAREST_MINS;
 
-      if (!this.editable) return;
+      if (!this.props.editable) return;
 
       var _mouseTargetRef$getBo = this.mouseTargetRef.getBoundingClientRect(),
           top = _mouseTargetRef$getBo.top;
