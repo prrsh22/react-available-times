@@ -78,7 +78,8 @@ export default class TimeSlot extends PureComponent {
       title,
       touchToDelete,
       isFixed,
-      editable
+      editable,
+      addable
     } = this.props;
 
     // 이벤트 다 때려박아서 보내주므로.. 다른 날 일정을 받게 되면 화면 표시 x
@@ -111,6 +112,7 @@ export default class TimeSlot extends PureComponent {
     const style = {
       top,
       height,
+      cursor: (editable ? 'grab' : 'default')
     };
 
     if (typeof width !== 'undefined' && typeof offset !== 'undefined') {
@@ -143,12 +145,13 @@ export default class TimeSlot extends PureComponent {
         </div>
         {!frozen && !touchToDelete && (
           <div>
-            <div
+            {addable && editable && <div
               className={styles.handle}
               onMouseDown={this.handleResizerMouseDown}
             >
               ...
-            </div>
+            </div> }
+            
             {editable ? <button
               className={styles.delete}
               onClick={this.handleDelete}

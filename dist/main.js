@@ -1580,6 +1580,8 @@ var Day = function (_PureComponent) {
           selection.start = newStart;
           selection.end = newEnd;
         } else {
+
+          if (!_this3.props.addable) return;
           // stretch element
           var startPos = (0, _positionInDay2.default)(date, selection.start, timeZone);
           var minPos = startPos + minLengthInMinutes * _Constants.MINUTE_IN_PIXELS;
@@ -1707,6 +1709,7 @@ var Day = function (_PureComponent) {
           }
         }),
         editable && !addable && available && _react2.default.createElement('div', {
+          onMouseDown: this.blankFunc,
           onMouseUp: this.handleMouseUp,
           onMouseMove: this.handleMouseMove,
           onMouseOut: this.handleMouseUp,
@@ -1751,6 +1754,7 @@ var Day = function (_PureComponent) {
             onMoveStart: _this4.handleMoveStart,
             onDelete: _this4.handleDelete,
             touchToDelete: touchToDeleteSelection,
+            addable: addable,
             editable: editable
           });
         })
@@ -2318,7 +2322,8 @@ var TimeSlot = function (_PureComponent) {
           title = _props6.title,
           touchToDelete = _props6.touchToDelete,
           isFixed = _props6.isFixed,
-          editable = _props6.editable;
+          editable = _props6.editable,
+          addable = _props6.addable;
 
       // 이벤트 다 때려박아서 보내주므로.. 다른 날 일정을 받게 되면 화면 표시 x
 
@@ -2347,7 +2352,8 @@ var TimeSlot = function (_PureComponent) {
 
       var style = {
         top: top,
-        height: height
+        height: height,
+        cursor: editable ? 'grab' : 'default'
       };
 
       if (typeof width !== 'undefined' && typeof offset !== 'undefined') {
@@ -2385,7 +2391,7 @@ var TimeSlot = function (_PureComponent) {
           !frozen && !touchToDelete && _react2.default.createElement(
             'div',
             null,
-            _react2.default.createElement(
+            addable && editable && _react2.default.createElement(
               'div',
               {
                 className: _TimeSlot2.default.handle,
@@ -3087,7 +3093,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, ".rat-AvailableTimes_component,\r\n.rat-AvailableTimes_component * {\r\n  box-sizing: border-box;\r\n}\r\n\r\n.rat-AvailableTimes_component {\r\n  position: relative;\r\n  width: 100%;\r\n  height: 100vh;\r\n  font-size: 12px;\r\n  line-height: 1.2;\r\n  font-family: helvetica, arial, sans-serif;\r\n  color: #666;\r\n}\r\n\r\n.rat-AvailableTimes_inner {\r\n  width: 100%;\r\n  height: 100%;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -ms-flex-direction: column;\r\n      flex-direction: column;\r\n}\r\n\r\n.rat-AvailableTimes_main {\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -ms-flex-direction: column;\r\n      flex-direction: column;\r\n  -ms-flex-positive: 1;\r\n      flex-grow: 1;\r\n  position: relative;\r\n  overflow: hidden;\r\n}\r\n\r\n.rat-AvailableTimes_toolbar {\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -ms-flex-align: center;\r\n      align-items: center;\r\n  -ms-flex-pack: end;\r\n      justify-content: flex-end;\r\n  padding: 10px 20px 25px 15px;\r\n  font-size: 18px;\r\n}\r\n\r\n.rat-AvailableTimes_buttons {\r\n  -ms-flex-negative: 0;\r\n      flex-shrink: 0;\r\n  margin: 2px 10px -2px 0px;\r\n}\r\n\r\n.rat-AvailableTimes_button {\r\n  border-radius: 3px;\r\n  background-color: transparent;\r\n  border: 0;\r\n  padding: 2px 5px;\r\n  cursor: pointer;\r\n  fill: #666;\r\n  -ms-flex-negative: 0;\r\n      flex-shrink: 0;\r\n}\r\n\r\n.rat-AvailableTimes_button:focus {\r\n  outline: none;\r\n}\r\n\r\n.rat-AvailableTimes_button:hover {\r\n  background-color: #F6FAFE;\r\n}\r\n\r\n.rat-AvailableTimes_button:active {\r\n  fill: #4477BD;\r\n}\r\n\r\n.rat-AvailableTimes_interval {\r\n  -ms-flex-negative: 1;\r\n      flex-shrink: 1;\r\n  -ms-flex-preferred-size: 150px;\r\n      flex-basis: 150px;\r\n  overflow: hidden;\r\n  text-overflow: ellipsis;\r\n  text-align: center;\r\n  white-space: nowrap;\r\n}\r\n\r\n.rat-AvailableTimes_calendarSelector {\r\n  -ms-flex-negative: 0;\r\n      flex-shrink: 0;\r\n  margin-left: 15px;\r\n}\r\n\r\n.rat-AvailableTimes_home {\r\n  transition: opacity .3s;\r\n  position: absolute;\r\n  bottom: 10px;\r\n  left: 5px;\r\n  border-radius: 50%;\r\n  border: none;\r\n  background-color: #4285f4;\r\n  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\r\n  opacity: 0;\r\n  pointer-events: none;\r\n  width: 40px;\r\n  height: 40px;\r\n  fill: #fff;\r\n  transition: all 0.2s;\r\n}\r\n\r\n.rat-AvailableTimes_homeActive {\r\n  pointer-events: inherit;\r\n  cursor: pointer;\r\n  opacity: 1;\r\n  line-height: 0;\r\n}\r\n\r\n.rat-AvailableTimes_home:focus {\r\n  outline: none;\r\n}\r\n\r\n.rat-AvailableTimes_home:hover {\r\n  background-color: #0070e0;\r\n}\r\n", ""]);
+exports.push([module.i, ".rat-AvailableTimes_component,\n.rat-AvailableTimes_component * {\n  box-sizing: border-box;\n}\n\n.rat-AvailableTimes_component {\n  position: relative;\n  width: 100%;\n  height: 100vh;\n  font-size: 12px;\n  line-height: 1.2;\n  font-family: helvetica, arial, sans-serif;\n  color: #666;\n}\n\n.rat-AvailableTimes_inner {\n  width: 100%;\n  height: 100%;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n}\n\n.rat-AvailableTimes_main {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  -ms-flex-positive: 1;\n      flex-grow: 1;\n  position: relative;\n  overflow: hidden;\n}\n\n.rat-AvailableTimes_toolbar {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-align: center;\n      align-items: center;\n  -ms-flex-pack: end;\n      justify-content: flex-end;\n  padding: 10px 20px 25px 15px;\n  font-size: 18px;\n}\n\n.rat-AvailableTimes_buttons {\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n  margin: 2px 10px -2px 0px;\n}\n\n.rat-AvailableTimes_button {\n  border-radius: 3px;\n  background-color: transparent;\n  border: 0;\n  padding: 2px 5px;\n  cursor: pointer;\n  fill: #666;\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n}\n\n.rat-AvailableTimes_button:focus {\n  outline: none;\n}\n\n.rat-AvailableTimes_button:hover {\n  background-color: #F6FAFE;\n}\n\n.rat-AvailableTimes_button:active {\n  fill: #4477BD;\n}\n\n.rat-AvailableTimes_interval {\n  -ms-flex-negative: 1;\n      flex-shrink: 1;\n  -ms-flex-preferred-size: 150px;\n      flex-basis: 150px;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  text-align: center;\n  white-space: nowrap;\n}\n\n.rat-AvailableTimes_calendarSelector {\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n  margin-left: 15px;\n}\n\n.rat-AvailableTimes_home {\n  transition: opacity .3s;\n  position: absolute;\n  bottom: 10px;\n  left: 5px;\n  border-radius: 50%;\n  border: none;\n  background-color: #4285f4;\n  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\n  opacity: 0;\n  pointer-events: none;\n  width: 40px;\n  height: 40px;\n  fill: #fff;\n  transition: all 0.2s;\n}\n\n.rat-AvailableTimes_homeActive {\n  pointer-events: inherit;\n  cursor: pointer;\n  opacity: 1;\n  line-height: 0;\n}\n\n.rat-AvailableTimes_home:focus {\n  outline: none;\n}\n\n.rat-AvailableTimes_home:hover {\n  background-color: #0070e0;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -3112,7 +3118,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, ".rat-CalendarSelector_component {\r\n  position: relative;\r\n  line-height: 0;\r\n  font-size: 14px;\r\n}\r\n\r\n.rat-CalendarSelector_modal {\r\n  z-index: 1;\r\n}\r\n\r\n.rat-CalendarSelector_clickTarget {\r\n  z-index: 1;\r\n  position: fixed;\r\n  top: 0;\r\n  bottom: 0;\r\n  left: 0;\r\n  right: 0;\r\n}\r\n\r\n.rat-CalendarSelector_menu {\r\n  z-index: 1;\r\n  background-color: #fff;\r\n  border: 1px solid #ccc;\r\n  width: 200px;\r\n  min-height: 150px;\r\n  max-height: 100vh;\r\n  position: absolute;\r\n  right: 0;\r\n  top: 100%;\r\n  text-align: left;\r\n  overflow: auto;\r\n  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\r\n  padding: 5px 0px;\r\n  line-height: 1;\r\n}\r\n\r\n.rat-CalendarSelector_calendar {\r\n  cursor: pointer;\r\n  display: block;\r\n  padding: 5px 10px;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -ms-flex-align: center;\r\n      align-items: center;\r\n}\r\n\r\n.rat-CalendarSelector_checkbox {\r\n  margin-right: 10px;\r\n  -ms-flex-positive: 0;\r\n      flex-grow: 0;\r\n}\r\n\r\n.rat-CalendarSelector_button {\r\n  border: none;\r\n  background-color: transparent;\r\n  padding: 0;\r\n  -webkit-appearance: none;\r\n     -moz-appearance: none;\r\n          appearance: none;\r\n  color: #666;\r\n  fill: #666;\r\n  cursor: pointer;\r\n  line-height: 0;\r\n}\r\n\r\n.rat-CalendarSelector_button svg {\r\n  height: 19px;\r\n}\r\n\r\n.rat-CalendarSelector_button:active {\r\n  fill: #4477BD;\r\n  color: #4477BD;\r\n}\r\n\r\n.rat-CalendarSelector_button:focus {\r\n  outline: none;\r\n}\r\n\r\n.rat-CalendarSelector_box {\r\n  -ms-flex-negative: 0;\r\n      flex-shrink: 0;\r\n  border-radius: 3px;\r\n  width: 24px;\r\n  height: 24px;\r\n  margin-right: 10px;\r\n}\r\n\r\n.rat-CalendarSelector_calendarTitle {\r\n  overflow: hidden;\r\n  text-overflow: ellipsis;\r\n  white-space: nowrap;\r\n  -ms-flex: 0 1 auto;\r\n      flex: 0 1 auto;\r\n}\r\n", ""]);
+exports.push([module.i, ".rat-CalendarSelector_component {\n  position: relative;\n  line-height: 0;\n  font-size: 14px;\n}\n\n.rat-CalendarSelector_modal {\n  z-index: 1;\n}\n\n.rat-CalendarSelector_clickTarget {\n  z-index: 1;\n  position: fixed;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n}\n\n.rat-CalendarSelector_menu {\n  z-index: 1;\n  background-color: #fff;\n  border: 1px solid #ccc;\n  width: 200px;\n  min-height: 150px;\n  max-height: 100vh;\n  position: absolute;\n  right: 0;\n  top: 100%;\n  text-align: left;\n  overflow: auto;\n  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);\n  padding: 5px 0px;\n  line-height: 1;\n}\n\n.rat-CalendarSelector_calendar {\n  cursor: pointer;\n  display: block;\n  padding: 5px 10px;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-align: center;\n      align-items: center;\n}\n\n.rat-CalendarSelector_checkbox {\n  margin-right: 10px;\n  -ms-flex-positive: 0;\n      flex-grow: 0;\n}\n\n.rat-CalendarSelector_button {\n  border: none;\n  background-color: transparent;\n  padding: 0;\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n  color: #666;\n  fill: #666;\n  cursor: pointer;\n  line-height: 0;\n}\n\n.rat-CalendarSelector_button svg {\n  height: 19px;\n}\n\n.rat-CalendarSelector_button:active {\n  fill: #4477BD;\n  color: #4477BD;\n}\n\n.rat-CalendarSelector_button:focus {\n  outline: none;\n}\n\n.rat-CalendarSelector_box {\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n  border-radius: 3px;\n  width: 24px;\n  height: 24px;\n  margin-right: 10px;\n}\n\n.rat-CalendarSelector_calendarTitle {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  -ms-flex: 0 1 auto;\n      flex: 0 1 auto;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -3136,7 +3142,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, ".rat-Day_component {\r\n  border-left: 1px solid #d6d6d6;\r\n  position: relative;\r\n  -webkit-user-select: none;\r\n     -moz-user-select: none;\r\n      -ms-user-select: none;\r\n          user-select: none;\r\n}\r\n\r\n.rat-Day_today {\r\n  background-color: rgba(195, 253, 147, 0.2);\r\n}\r\n\r\n.rat-Day_grayed {\r\n  background-image: linear-gradient(-45deg, #f6f6f6 25%, transparent 25%, transparent 50%, #f6f6f6 50%, #f6f6f6 75%, transparent 75%, transparent);\r\n  background-size: 10px 10px;\r\n  border-bottom: none;\r\n}\r\n\r\n.rat-Day_block {\r\n  position: absolute;\r\n  width: 100%;\r\n}\r\n\r\n.rat-Day_mouseTarget {\r\n  left: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n  position: absolute;\r\n  cursor: default;\r\n}\r\n", ""]);
+exports.push([module.i, ".rat-Day_component {\n  border-left: 1px solid #d6d6d6;\n  position: relative;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.rat-Day_today {\n  background-color: rgba(195, 253, 147, 0.2);\n}\n\n.rat-Day_grayed {\n  background-image: linear-gradient(-45deg, #f6f6f6 25%, transparent 25%, transparent 50%, #f6f6f6 50%, #f6f6f6 75%, transparent 75%, transparent);\n  background-size: 10px 10px;\n  border-bottom: none;\n}\n\n.rat-Day_block {\n  position: absolute;\n  width: 100%;\n}\n\n.rat-Day_mouseTarget {\n  left: 0;\n  bottom: 0;\n  right: 0;\n  position: absolute;\n  cursor: default;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -3156,7 +3162,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, ".rat-DayHeader_component {\r\n  -ms-flex-negative: 1;\r\n      flex-shrink: 1;\r\n  overflow: hidden;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -ms-flex-direction: column;\r\n      flex-direction: column;\r\n}\r\n\r\n.rat-DayHeader_day {\r\n  -ms-flex-negative: 0;\r\n      flex-shrink: 0;\r\n  padding: 5px;\r\n  text-align: center;\r\n}\r\n\r\n.rat-DayHeader_transparent {\r\n  opacity: 0.25;\r\n}\r\n\r\n.rat-DayHeader_events {\r\n  -ms-flex-positive: 1;\r\n      flex-grow: 1;\r\n  text-align: left;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -ms-flex-wrap: wrap;\r\n      flex-wrap: wrap;\r\n  border-top: 1px solid #d6d6d6;\r\n  min-height: 15px;\r\n  border-left: 1px solid #d6d6d6;\r\n}\r\n\r\n.rat-DayHeader_event {\r\n  -ms-flex-preferred-size: 33.3333%;\r\n      flex-basis: 33.3333%;\r\n  overflow: hidden;\r\n  white-space: nowrap;\r\n  text-overflow: ellipsis;\r\n  -ms-flex-positive: 1;\r\n      flex-grow: 1;\r\n  -ms-flex-negative: 1;\r\n      flex-shrink: 1;\r\n  padding: 3px;\r\n  background-color: #d6dfe5;\r\n  border-left: 1px solid #acacac;\r\n  font-weight: 100;\r\n  color: #3d464d;\r\n  margin: 1px;\r\n}\r\n", ""]);
+exports.push([module.i, ".rat-DayHeader_component {\n  -ms-flex-negative: 1;\n      flex-shrink: 1;\n  overflow: hidden;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n}\n\n.rat-DayHeader_day {\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n  padding: 5px;\n  text-align: center;\n}\n\n.rat-DayHeader_transparent {\n  opacity: 0.25;\n}\n\n.rat-DayHeader_events {\n  -ms-flex-positive: 1;\n      flex-grow: 1;\n  text-align: left;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n  border-top: 1px solid #d6d6d6;\n  min-height: 15px;\n  border-left: 1px solid #d6d6d6;\n}\n\n.rat-DayHeader_event {\n  -ms-flex-preferred-size: 33.3333%;\n      flex-basis: 33.3333%;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  -ms-flex-positive: 1;\n      flex-grow: 1;\n  -ms-flex-negative: 1;\n      flex-shrink: 1;\n  padding: 3px;\n  background-color: #d6dfe5;\n  border-left: 1px solid #acacac;\n  font-weight: 100;\n  color: #3d464d;\n  margin: 1px;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -3176,7 +3182,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, ".rat-Ruler_component {\r\n  -ms-flex-negative: 0;\r\n      flex-shrink: 0;\r\n  position: relative;\r\n  background-color: #fff;\r\n}\r\n.rat-Ruler_hour {\r\n  text-align: right;\r\n  padding: 2px 5px;\r\n}\r\n\r\n.rat-Ruler_inner {\r\n  transform: translateY(-70%);\r\n}\r\n", ""]);
+exports.push([module.i, ".rat-Ruler_component {\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n  position: relative;\n  background-color: #fff;\n}\n.rat-Ruler_hour {\n  text-align: right;\n  padding: 2px 5px;\n}\n\n.rat-Ruler_inner {\n  transform: translateY(-70%);\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -3194,7 +3200,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, ".rat-Slider_component {\r\n  position: absolute;\r\n  width: 100%;\r\n  height: 100%;\r\n  overflow: hidden;\r\n}\r\n\r\n.rat-Slider_item {\r\n  transition: transform .2s;\r\n  position: absolute;\r\n  width: 100%;\r\n  height: 100%;\r\n  top: 0;\r\n  left: 0;\r\n}\r\n", ""]);
+exports.push([module.i, ".rat-Slider_component {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n}\n\n.rat-Slider_item {\n  transition: transform .2s;\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -3211,7 +3217,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, ".rat-TimeSlot_component {\r\n  background-color: rgba(40, 201, 111, 0.7);\r\n  position: absolute;\r\n  width: 100%;\r\n  color: #fff;\r\n  overflow: hidden;\r\n  cursor: grab;\r\n}\r\n\r\n.rat-TimeSlot_active {\r\n  pointer-events: none;\r\n}\r\n\r\n.rat-TimeSlot_delete {\r\n  position: absolute;\r\n  top: 3px;\r\n  right: 3px;\r\n  padding: 0 5px;\r\n  border: none;\r\n  background-color: #fff;\r\n  display: none;\r\n  font-size: 20px;\r\n  line-height: 1;\r\n  color: #999;\r\n  border-radius: 3px;\r\n  cursor: pointer;\r\n}\r\n\r\n.rat-TimeSlot_component:hover .rat-TimeSlot_delete {\r\n  display: block;\r\n}\r\n\r\n.rat-TimeSlot_frozen {\r\n  background-color: #93cff7;\r\n  border-left: 1px solid #acacac;\r\n  color: #3d464d;\r\n  opacity: 1;\r\n  cursor: default;\r\n}\r\n\r\n.rat-TimeSlot_fixed {\r\n  background-color: #f8032c;\r\n  border-left: 1px solid #acacac;\r\n  color: #3d464d;\r\n  opacity: 1;\r\n  cursor: default;\r\n}\r\n\r\n.rat-TimeSlot_handle {\r\n  position: absolute;\r\n  width: 100%;\r\n  bottom: 0;\r\n  left: 0;\r\n  text-align: center;\r\n  cursor: ns-resize;\r\n}\r\n\r\n.rat-TimeSlot_title {\r\n  padding: 0px 5px;\r\n  font-size: 10px;\r\n  font-weight: 100;\r\n  overflow: hidden;\r\n  max-height: 100%;\r\n  pointer-events: none;\r\n  word-wrap: break-word;\r\n}\r\n", ""]);
+exports.push([module.i, ".rat-TimeSlot_component {\n  background-color: #00A0B3;\n  opacity: 0.8;\n  position: absolute;\n  width: 100%;\n  color: #fff;\n  overflow: hidden;\n}\n\n.rat-TimeSlot_active {\n  pointer-events: none;\n}\n\n.rat-TimeSlot_delete {\n  position: absolute;\n  top: 3px;\n  right: 3px;\n  padding: 0 5px;\n  border: none;\n  background-color: #fff;\n  display: none;\n  font-size: 20px;\n  line-height: 1;\n  color: #999;\n  border-radius: 3px;\n  cursor: pointer;\n}\n\n.rat-TimeSlot_component:hover .rat-TimeSlot_delete {\n  display: block;\n}\n\n.rat-TimeSlot_frozen {\n  background-color: #93cff7;\n  border-left: 1px solid #acacac;\n  color: #3d464d;\n  opacity: 1;\n  cursor: default;\n}\n\n.rat-TimeSlot_fixed {\n  background-color: #f52a4c;\n  border-left: 1px solid #acacac;\n  color: #fff;\n  opacity: 1;\n  cursor: default;\n}\n\n.rat-TimeSlot_handle {\n  position: absolute;\n  width: 100%;\n  bottom: 0;\n  left: 0;\n  text-align: center;\n  cursor: ns-resize;\n}\n\n.rat-TimeSlot_title {\n  padding: 0px 5px;\n  font-size: 10px;\n  font-weight: 100;\n  overflow: hidden;\n  max-height: 100%;\n  pointer-events: none;\n  word-wrap: break-word;\n}\n", ""]);
 
 // exports
 exports.locals = {
@@ -3233,7 +3239,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, ".rat-Week_component {\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -ms-flex-direction: column;\r\n      flex-direction: column;\r\n  height: 100%;\r\n  width: 100%;\r\n}\r\n\r\n.rat-Week_days,\r\n.rat-Week_header {\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -ms-flex-align: start;\r\n      align-items: flex-start;\r\n}\r\n\r\n.rat-Week_header {\r\n  -ms-flex-align: stretch;\r\n      align-items: stretch;\r\n}\r\n\r\n.rat-Week_daysWrapper {\r\n  position: relative;\r\n  overflow: auto;\r\n  -ms-flex: 1 1 auto;\r\n      flex: 1 1 auto;\r\n  -webkit-overflow-scrolling: touch;\r\n}\r\n\r\n.rat-Week_allDayLabel {\r\n  position: absolute;\r\n  left: -35px;\r\n  bottom: 3px;\r\n  font-size: 10px;\r\n  line-height: 1;\r\n}\r\n\r\n.rat-Week_header {\r\n  position: relative;\r\n  -ms-flex-negative: 0;\r\n      flex-shrink: 0;\r\n  border-bottom: 2px solid #d6d6d6;\r\n}\r\n\r\n.rat-Week_lines {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n}\r\n\r\n.rat-Week_hour {\r\n  border-bottom: 1px solid #d6d6d6;\r\n  pointer-events: none;\r\n}\r\n\r\n", ""]);
+exports.push([module.i, ".rat-Week_component {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-direction: column;\n      flex-direction: column;\n  height: 100%;\n  width: 100%;\n}\n\n.rat-Week_days,\n.rat-Week_header {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-align: start;\n      align-items: flex-start;\n}\n\n.rat-Week_header {\n  -ms-flex-align: stretch;\n      align-items: stretch;\n}\n\n.rat-Week_daysWrapper {\n  position: relative;\n  overflow: auto;\n  -ms-flex: 1 1 auto;\n      flex: 1 1 auto;\n  -webkit-overflow-scrolling: touch;\n}\n\n.rat-Week_allDayLabel {\n  position: absolute;\n  left: -35px;\n  bottom: 3px;\n  font-size: 10px;\n  line-height: 1;\n}\n\n.rat-Week_header {\n  position: relative;\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n  border-bottom: 2px solid #d6d6d6;\n}\n\n.rat-Week_lines {\n  position: absolute;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n}\n\n.rat-Week_hour {\n  border-bottom: 1px solid #d6d6d6;\n  pointer-events: none;\n}\n\n", ""]);
 
 // exports
 exports.locals = {

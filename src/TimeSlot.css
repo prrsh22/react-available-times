@@ -1,10 +1,10 @@
 :local(.component) {
-  background-color: rgba(40, 201, 111, 0.7);
+  background-color: #00A0B3;
+  opacity: 0.8;
   position: absolute;
   width: 100%;
   color: #fff;
   overflow: hidden;
-  cursor: grab;
 }
 
 :local(.active) {
@@ -39,9 +39,9 @@
 }
 
 :local(.fixed) {
-  background-color: #f8032c;
+  background-color: #f52a4c;
   border-left: 1px solid #acacac;
-  color: #3d464d;
+  color: #fff;
   opacity: 1;
   cursor: default;
 }

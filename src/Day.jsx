@@ -190,6 +190,8 @@ export default class Day extends PureComponent {
         selection.start = newStart;
         selection.end = newEnd;
       } else {
+        
+        if (!this.props.addable) return;
         // stretch element
         const startPos = positionInDay(date, selection.start, timeZone);
         const minPos = startPos + (minLengthInMinutes * MINUTE_IN_PIXELS);
@@ -316,6 +318,7 @@ export default class Day extends PureComponent {
         )}
         
         { editable && !addable && available && <div
+        onMouseDown={this.blankFunc}
         onMouseUp={this.handleMouseUp}
         onMouseMove={this.handleMouseMove}
         onMouseOut={this.handleMouseUp}
@@ -359,6 +362,7 @@ export default class Day extends PureComponent {
             onMoveStart={this.handleMoveStart}
             onDelete={this.handleDelete}
             touchToDelete={touchToDeleteSelection}
+            addable={addable}
             editable={editable}
           />
         ))}
