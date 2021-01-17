@@ -932,7 +932,8 @@ var AvailableTimes = function (_PureComponent) {
           events = _props3.events,
           eventList = _props3.eventList,
           addable = _props3.addable,
-          editable = _props3.editable;
+          editable = _props3.editable,
+          only30Min = _props3.only30Min;
       var _state = this.state,
           availableWidth = _state.availableWidth,
           currentWeekIndex = _state.currentWeekIndex,
@@ -1031,7 +1032,8 @@ var AvailableTimes = function (_PureComponent) {
                   availableHourRange: availableHourRange,
                   eventList: eventList,
                   addable: addable,
-                  editable: editable
+                  editable: editable,
+                  only30Min: only30Min
                 });
               })
             )
@@ -1056,6 +1058,8 @@ exports.default = AvailableTimes;
 
 
 AvailableTimes.propTypes = {
+  editable: _propTypes2.default.bool,
+  only30Min: _propTypes2.default.bool,
   addable: _propTypes2.default.bool,
   timeConvention: _propTypes2.default.oneOf(['12h', '24h']),
   timeZone: _propTypes2.default.string.isRequired,
@@ -1084,6 +1088,7 @@ AvailableTimes.propTypes = {
 };
 
 AvailableTimes.defaultProps = {
+  only30Min: true,
   addable: true,
   editable: true,
   timeZone: _momentTimezone2.default.tz.guess(),
@@ -1581,7 +1586,7 @@ var Day = function (_PureComponent) {
           selection.end = newEnd;
         } else {
 
-          if (!_this3.props.addable) return;
+          if (!_this3.props.addable || _this3.props.only30Min) return;
           // stretch element
           var startPos = (0, _positionInDay2.default)(date, selection.start, timeZone);
           var minPos = startPos + minLengthInMinutes * _Constants.MINUTE_IN_PIXELS;
@@ -1633,7 +1638,8 @@ var Day = function (_PureComponent) {
           timeZone = _props3.timeZone,
           touchToDeleteSelection = _props3.touchToDeleteSelection,
           hourLimits = _props3.hourLimits,
-          eventList = _props3.eventList;
+          eventList = _props3.eventList,
+          only30Min = _props3.only30Min;
       var _state = this.state,
           selections = _state.selections,
           index = _state.index;
@@ -2678,7 +2684,8 @@ var Week = function (_PureComponent) {
           availableDays = _props.availableDays,
           eventList = _props.eventList,
           addable = _props.addable,
-          editable = _props.editable;
+          editable = _props.editable,
+          only30Min = _props.only30Min;
       var _state = this.state,
           dayEvents = _state.dayEvents,
           daySelections = _state.daySelections,
@@ -2758,7 +2765,8 @@ var Week = function (_PureComponent) {
                 touchToDeleteSelection: touchToDeleteSelection,
                 eventList: eventList,
                 addable: addable,
-                editable: editable
+                editable: editable,
+                only30Min: only30Min
               });
             })
           )

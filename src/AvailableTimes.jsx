@@ -202,7 +202,8 @@ export default class AvailableTimes extends PureComponent {
       events,
       eventList,
       addable,
-      editable
+      editable,
+      only30Min,
     } = this.props;
 
     const {
@@ -290,6 +291,7 @@ export default class AvailableTimes extends PureComponent {
                     eventList={eventList}
                     addable={addable}
                     editable={editable}
+                    only30Min={only30Min}
                   />
                 );
               })}
@@ -308,6 +310,8 @@ export default class AvailableTimes extends PureComponent {
 }
 
 AvailableTimes.propTypes = {
+  editable: PropTypes.bool,
+  only30Min: PropTypes.bool,
   addable: PropTypes.bool,
   timeConvention: PropTypes.oneOf(['12h', '24h']),
   timeZone: PropTypes.string.isRequired,
@@ -342,6 +346,7 @@ AvailableTimes.propTypes = {
 };
 
 AvailableTimes.defaultProps = {
+  only30Min: true,
   addable: true,
   editable: true,
   timeZone: momentTimezone.tz.guess(),

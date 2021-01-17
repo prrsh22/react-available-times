@@ -191,7 +191,7 @@ export default class Day extends PureComponent {
         selection.end = newEnd;
       } else {
         
-        if (!this.props.addable) return;
+        if (!this.props.addable || this.props.only30Min) return;
         // stretch element
         const startPos = positionInDay(date, selection.start, timeZone);
         const minPos = startPos + (minLengthInMinutes * MINUTE_IN_PIXELS);
@@ -239,7 +239,8 @@ export default class Day extends PureComponent {
       timeZone,
       touchToDeleteSelection,
       hourLimits,
-      eventList
+      eventList,
+      only30Min
     } = this.props;
 
     const { selections, index } = this.state;

@@ -148,7 +148,8 @@ export default class Week extends PureComponent {
       availableDays,
       eventList,
       addable,
-      editable
+      editable,
+      only30Min
     } = this.props;
     const { dayEvents, daySelections, daysWidth, widthOfAScrollbar } = this.state;
 
@@ -216,6 +217,7 @@ export default class Week extends PureComponent {
                 eventList={eventList}
                 addable={addable}
                 editable={editable}
+                only30Min={only30Min}
               />
             ))}
           </div>
