@@ -346,7 +346,7 @@ AvailableTimes.propTypes = {
 };
 
 AvailableTimes.defaultProps = {
-  only30Min: true,
+  only30Min: false,
   addable: true,
   editable: true,
   timeZone: momentTimezone.tz.guess(),
