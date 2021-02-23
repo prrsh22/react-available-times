@@ -2695,8 +2695,10 @@ var Week = function (_PureComponent) {
 
       var filteredDays = week.days.map(function (day) {
         var updatedDay = day;
+        updatedDay.date.setHours(0, 0, 0, 0);
         var today = new Date();
-        updatedDay.available = recurring ? true : today < updatedDay.date;
+        today.setHours(0, 0, 0, 0);
+        updatedDay.available = recurring ? true : today <= updatedDay.date;
         return updatedDay;
       });
       return _react2.default.createElement(

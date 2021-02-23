@@ -154,9 +154,11 @@ export default class Week extends PureComponent {
     const { dayEvents, daySelections, daysWidth, widthOfAScrollbar } = this.state;
 
     const filteredDays = week.days.map((day) => {
-      const updatedDay = day;
-      const today = new Date();
-      updatedDay.available = recurring ? true : (today < updatedDay.date);
+      let updatedDay = day;
+      updatedDay.date.setHours(0,0,0,0);
+      let today = new Date();
+      today.setHours(0,0,0,0);
+      updatedDay.available = recurring ? true : (today <= updatedDay.date);
       return updatedDay;
     });
     return (
